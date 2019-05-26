@@ -64,7 +64,7 @@ open class GPXCopyright: GPXElement {
     ///
     init(dictionary: [String : String]) {
         super.init()
-        self.year = CopyrightYearParser.parse(dictionary["year"])
+        self.year = DateParser.parse(year: dictionary["year"])
         self.license = dictionary["license"]
         self.author = dictionary["author"]
     }

@@ -12,8 +12,7 @@ import Foundation
 
 // MARK:- Date Parser
 
-class ISO8601DateParser {
-    
+class DateParser {
     private static var calendarCache = [Int : Calendar]()
     private static var components = DateComponents()
     
@@ -28,7 +27,7 @@ class ISO8601DateParser {
         guard let NonNilString = dateString else {
             return nil
         }
-        
+
         _ = withVaList([year, month, day, hour, minute,
                         second], { pointer in
                             vsscanf(NonNilString, "%d-%d-%dT%d:%d:%dZ", pointer)
@@ -51,19 +50,8 @@ class ISO8601DateParser {
         calendarCache[0] = calendar
         return calendar.date(from: components)
     }
-}
-
-// MARK:- Year Parser
-
-/// Special parser that only parses year for the copyright attribute when `GPXParser` parses.
-class CopyrightYearParser {
     
-    private static var calendarCache = [Int : Calendar]()
-    private static var components = DateComponents()
-    
-    private static let year = UnsafeMutablePointer<Int>.allocate(capacity: 1)
-    
-    static func parse(_ yearString: String?) -> Date? {
+    static func parse(year yearString: String?) -> Date? {
         guard let NonNilString = yearString else {
             return nil
         }
@@ -75,13 +63,14 @@ class CopyrightYearParser {
         
         components.year = year.pointee
         
-        if let calendar = calendarCache[0] {
+        if let calendar = calendarCache[1] {
             return calendar.date(from: components)
         }
         
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        calendarCache[0] = calendar
+        calendarCache[1] = calendar
         return calendar.date(from: components)
     }
+    
 }

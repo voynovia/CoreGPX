@@ -71,7 +71,7 @@ open class GPXMetadata: GPXElement {
     ///     - dictionary: a dictionary with a key of an attribute, followed by the value which is set as the GPX file is parsed.
     ///
     init(dictionary: [String : String]) {
-        self.time = ISO8601DateParser.parse(dictionary["time"])
+        self.time = DateParser.parse(dictionary["time"])
         super.init()
         self.name = dictionary["name"]
         self.desc = dictionary["desc"]
